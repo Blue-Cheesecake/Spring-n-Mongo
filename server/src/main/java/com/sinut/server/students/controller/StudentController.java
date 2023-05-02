@@ -1,5 +1,6 @@
 package com.sinut.server.students.controller;
 
+import com.sinut.server.exception.AlreadyExistsException;
 import com.sinut.server.students.model.Student;
 import com.sinut.server.students.model.StudentRequest;
 import com.sinut.server.students.service.StudentService;
@@ -32,7 +33,11 @@ public class StudentController {
     @CrossOrigin
     @PostMapping("/add")
     public ResponseEntity<String> addStudent(@RequestBody StudentRequest request) {
-        studentService.addStudent(Student.fromRequest(request));
+        try {
+            studentService.addStudent(Student.fromRequest(request));
+        } catch (AlreadyExistsException e) {
+            return ResponseEntity.ok("Some Fields are already exists");
+        }
         return ResponseEntity.ok("Added");
     }
 

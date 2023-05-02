@@ -1,5 +1,6 @@
 package com.sinut.server.students.service;
 
+import com.sinut.server.exception.AlreadyExistsException;
 import com.sinut.server.students.model.Student;
 import com.sinut.server.students.repo.StudentRepo;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,11 @@ public class StudentService {
         return studentRepo.findStudentByEmail(email);
     }
 
-    public void addStudent(Student student) {
+    public void addStudent(Student student) throws AlreadyExistsException {
+        Optional<Student> studentResult = getStudent(student.getEmail());
+        if (studentResult.isPresent()) {
+            throw new AlreadyExistsException("The student email: " + student.getEmail() + " already exist");
+        }
         studentRepo.save(student);
     }
 
