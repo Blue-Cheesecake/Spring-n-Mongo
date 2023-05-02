@@ -1,6 +1,7 @@
 package com.sinut.server.students.controller;
 
 import com.sinut.server.students.model.Student;
+import com.sinut.server.students.model.StudentRequest;
 import com.sinut.server.students.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,19 @@ public class StudentController {
     @GetMapping("/get/{email}")
     public ResponseEntity<Optional<Student>> getStudent(@PathVariable(name = "email") String email) {
         return ResponseEntity.ok(studentService.getStudent(email));
+    }
+
+    @CrossOrigin
+    @PostMapping("/add")
+    public ResponseEntity<String> addStudent(@RequestBody StudentRequest request) {
+        studentService.addStudent(Student.fromRequest(request));
+        return ResponseEntity.ok("Added");
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/del")
+    public ResponseEntity<String> deleteAllStudent() {
+        studentService.clear();
+        return ResponseEntity.ok("Deleted");
     }
 }

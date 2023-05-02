@@ -22,4 +22,12 @@ public class StudentService {
         return studentRepo.findStudentByEmail(email);
     }
 
+    public void addStudent(Student student) {
+        studentRepo.save(student);
+    }
+
+    public void clear() {
+        studentRepo.deleteAll();
+    }
+
 }
